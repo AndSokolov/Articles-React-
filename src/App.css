@@ -1,0 +1,14 @@
+.App {
+    min-width: 740px;
+}
+
+.content-title {
+    letter-spacing: 3px;
+    font-style: italic;
+    text-align: center;
+    color: #ffffff;
+    width: 120%;
+    margin-left: -70px;
+    background-color: #2d3134d9;
+    padding: 3px;
+}

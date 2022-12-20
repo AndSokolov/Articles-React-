@@ -1,0 +1,23 @@
+.container {
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: #1976d2;
+    box-shadow: 0 2px 5px #0000004d;
+
+    h1, a {
+      color: #ffffff;
+      margin: 0;
+    }
+
+    a {
+      font-size: 20px;
+
+      &:hover {
+        color: #bed6ff;
+      }
+    }
+  }
+}

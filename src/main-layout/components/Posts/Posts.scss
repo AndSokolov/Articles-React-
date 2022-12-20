@@ -1,0 +1,46 @@
+.posts-container {
+
+    .content {
+        padding: 20px 70px;
+    }
+
+    .ant-list-item {
+        cursor: pointer;
+        box-shadow: 0 0 4px #eee;
+
+
+        & > div {
+            font-size: 16px;
+        }
+    }
+
+    .ant-list-item:hover {
+        box-shadow: 0 0px 6px rgba(0, 0, 0, 0.16);
+    }
+
+    .change-view {
+        float: right;
+
+        button.active {
+            color: #40a9ff;
+            border-color: #40a9ff;
+        }
+    }
+
+    .search-bar {
+        .label {
+            margin-right: 15px;
+            font-size: 18px;
+        }
+
+        .input {
+            width: 250px;
+        }
+    }
+
+    .ant-table-content {
+        tbody tr {
+            cursor: pointer;
+        }
+    }
+}

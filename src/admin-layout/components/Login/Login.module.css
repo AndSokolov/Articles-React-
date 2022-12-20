@@ -1,0 +1,11 @@
+.login {
+    margin: 40px auto 0 auto;
+    max-width: 500px;
+}
+
+.error {
+    color: #ff4d4f;
+    margin-left: 82px;
+    text-align: center;
+    padding: 10px 0;
+}
