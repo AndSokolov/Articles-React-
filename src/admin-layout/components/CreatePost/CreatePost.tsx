@@ -5,10 +5,13 @@ import { postsAdminApi } from "../../api/api";
 import ReactQuill from "react-quill";
 import { Button, Form, Input, notification } from "antd";
 import './CreatePost.scss'
+import { resetPostsShouldUpdate } from "../../../shared/redux/posts-reducer";
+import { useAppDispatch } from "../../../shared/redux/store";
 
 const CreatePost: React.FC<{}> = () => {
 
     const [form] = Form.useForm();
+    const dispatch = useAppDispatch();
     const [context, setContext] = useState<string | undefined>();
     const [quillError, setQuillError] = useState<boolean>(false);
 
@@ -17,6 +20,7 @@ const CreatePost: React.FC<{}> = () => {
         postsAdminApi.createPost(newPost).then(() => {
             form.resetFields();
             showNotification();
+            dispatch(resetPostsShouldUpdate());
         })
     }
 

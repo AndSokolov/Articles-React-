@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { withAuthRedirect } from "../../hoc/withAuthRedirect";
 import { AppStateType, useAppDispatch } from "../../../shared/redux/store";
-import { getPost } from "../../../shared/redux/posts-reducer";
+import {getPost, resetPostsShouldUpdate} from "../../../shared/redux/posts-reducer";
 import { useSelector } from "react-redux";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
@@ -33,6 +33,7 @@ const EditPost: React.FC<{}> = () => {
       const newPost: PostI = {...post, context, date: new Date().toString()}
         postsAdminApi.updatePost(newPost).then(() => {
             showNotification(newPost.id);
+            dispatch(resetPostsShouldUpdate());
         })
     }
 

@@ -11,12 +11,16 @@ import { postsAdminApi } from "../../api/api";
 import './Dashboard.scss'
 
 const Dashboard: React.FC<{}> = () => {
-    const dispatch = useAppDispatch();
-    const posts = useSelector((state: AppStateType) => state.posts.posts);
     const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const postsState = useSelector((state: AppStateType) => state.posts);
+    const { posts, postsShouldUpdate } = postsState;
+
     useEffect(() => {
-       dispatch(getPosts())
-    }, []);
+        if (postsShouldUpdate) {
+            dispatch(getPosts())
+        }
+    }, [postsShouldUpdate]);
 
     const dataSource = Object.values(posts);
     const { confirm } = Modal

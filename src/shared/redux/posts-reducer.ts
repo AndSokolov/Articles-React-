@@ -4,9 +4,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 export interface InitialStateInterface{
     posts: PostsI;
+    postsShouldUpdate: boolean;
 }
 const initialState: InitialStateInterface = {
     posts: {},
+    postsShouldUpdate: true
 }
 
 export const getPosts = createAsyncThunk(
@@ -25,15 +27,22 @@ export const getPost = createAsyncThunk(
 const postsSlice = createSlice({
     name: 'posts',
     initialState,
-    reducers: {},
+    reducers: {
+        resetPostsShouldUpdate(state) {
+            state.postsShouldUpdate = true;
+        }
+    },
     extraReducers: (builder) => {
         builder.addCase(getPosts.fulfilled, (state, action) => {
             state.posts = action.payload;
+            state.postsShouldUpdate = false;
         })
         builder.addCase(getPost.fulfilled, (state, action) => {
             state.posts[action.payload.id] = action.payload.post;
         })
     },
 })
+
+export const { resetPostsShouldUpdate } = postsSlice.actions;
 
 export default postsSlice.reducer;
