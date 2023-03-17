@@ -2,13 +2,17 @@ import { PostsI } from "../types/types";
 import { postsApi } from "../api/api";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
+export type ViewType = 'grid' | 'table';
+
 export interface InitialStateInterface{
     posts: PostsI;
     postsShouldUpdate: boolean;
+    viewType: ViewType
 }
 const initialState: InitialStateInterface = {
     posts: {},
-    postsShouldUpdate: true
+    postsShouldUpdate: true,
+    viewType: 'grid'
 }
 
 export const getPosts = createAsyncThunk(
@@ -28,8 +32,11 @@ const postsSlice = createSlice({
     name: 'posts',
     initialState,
     reducers: {
-        resetPostsShouldUpdate(state) {
+        resetPostsShouldUpdate(state: InitialStateInterface) {
             state.postsShouldUpdate = true;
+        },
+        setViewType(state: InitialStateInterface, { payload }: { payload: ViewType }) {
+            state.viewType = payload;
         }
     },
     extraReducers: (builder) => {
@@ -43,6 +50,6 @@ const postsSlice = createSlice({
     },
 })
 
-export const { resetPostsShouldUpdate } = postsSlice.actions;
+export const { resetPostsShouldUpdate, setViewType } = postsSlice.actions;
 
 export default postsSlice.reducer;

@@ -1,15 +1,18 @@
-import { Button, Card, Divider, Input, List, Table } from "antd";
+import { Button, Divider, Input, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getPosts, InitialStateInterface } from "../../../shared/redux/posts-reducer";
+import {getPosts, InitialStateInterface, setViewType, ViewType} from "../../../shared/redux/posts-reducer";
 import { PostI } from "../../../shared/types/types";
 import { AppstoreOutlined, TableOutlined } from "@ant-design/icons";
 import './Posts.scss'
+import Grid from "./Grid/Grid";
 
 interface Props {
-    posts: InitialStateInterface,
-    getPosts: () => void
+    posts: InitialStateInterface;
+    viewType: ViewType;
+    getPosts: () => void;
+    setViewType: (type: ViewType) => void;
 }
 
 const Posts: React.FC<Props> = (props) => {
@@ -22,10 +25,9 @@ const Posts: React.FC<Props> = (props) => {
     const toPost = (id: string) => navigate('/posts/' + id)
 
     const [searchText, setSearchText] = useState<string>('');
-    const [isGrid, setIsGrid] = useState<boolean>(true);
 
     const posts: PostI[] = Object.values(props.posts)
-    let dataSource = searchText ? posts.filter(item => Object.values(item).join('').includes(searchText)) : posts;
+    let dataSource: PostI[] = searchText ? posts.filter(item => Object.values(item).join('').includes(searchText)) : posts;
 
     const columns = [
         {
@@ -49,8 +51,8 @@ const Posts: React.FC<Props> = (props) => {
         <h2 className='content-title'>Posts</h2>
         <div className='content'>
             <div className='change-view'>
-                <Button className={isGrid ? 'active' : ''} icon={<AppstoreOutlined/> } onClick={(e) => {setIsGrid(true)}} />
-                <Button className={!isGrid ? 'active' : ''} icon={<TableOutlined /> } onClick={() => {setIsGrid(false)}} />
+                <Button className={props.viewType === 'grid' ? 'active' : ''} icon={<AppstoreOutlined/> } onClick={(e) => {props.setViewType('grid');}} />
+                <Button className={props.viewType === 'table' ? 'active' : ''} icon={<TableOutlined /> } onClick={() => {props.setViewType('table');}} />
             </div>
             <div className='search-bar'>
                 <span className='label'>Search: </span>
@@ -58,19 +60,10 @@ const Posts: React.FC<Props> = (props) => {
             </div>
             <Divider/>
             {
-                isGrid ? <List
-                        grid={{gutter: 40, column: 4}}
-                        dataSource={dataSource}
-                        renderItem={(post) => (
-                            <List.Item onClick={() => {toPost(post.id)}}>
-                                <Card title={post.title}>
-                                    <div>Date: {post.date}</div>
-                                    <div>Author: {post.author}</div>
-                                </Card>
-                            </List.Item>
-                        )}
-                    /> : <Table dataSource={dataSource} columns={columns} onRow={(record) => ({ onClick: () => { toPost(record.id) }})} />
-
+                props.viewType === 'grid' ?
+                    <Grid toPost={toPost} datasource={dataSource}/>
+                    :
+                    <Table dataSource={dataSource} columns={columns} onRow={(record) => ({ onClick: () => { toPost(record.id) }})} />
             }
 
         </div>
@@ -79,6 +72,8 @@ const Posts: React.FC<Props> = (props) => {
 
 const mapStateToProps = (state: any) => ({
     posts: state.posts.posts,
+    viewType: state.posts.viewType
 });
 
-export default connect(mapStateToProps, {getPosts})(Posts);
+export default connect(mapStateToProps, {getPosts, setViewType})(Posts);
+
